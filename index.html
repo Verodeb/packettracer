@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cisco Config Generator</title>
+
+<style>
+body {
+    background: radial-gradient(circle at top, #1d1d1d, #0a0a0a);
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: white;
+}
+
+.container {
+    width: 90%;
+    max-width: 500px;
+    background: rgba(30, 30, 30, 0.85);
+    backdrop-filter: blur(15px);
+    border-radius: 22px;
+    padding: 35px;
+    box-shadow: 0 0 30px rgba(0, 180, 255, 0.15);
+    text-align: center;
+}
+
+h1 {
+    font-size: 34px;
+    font-weight: bold;
+    color: #00bfff;
+    margin-bottom: 30px;
+}
+
+button {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(90deg, #0077cc, #00bfff);
+    color: black;
+    border: none;
+    border-radius: 12px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: 0.25s;
+}
+
+button:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 20px #00bfff;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+    <h1>Cisco Config Generator</h1>
+    <button onclick="location.href='router.html'">Router Settings Generator</button>
+    <button onclick="location.href='vlan.html'">VLAN Generator</button>
+</div>
+</body>
+</html>

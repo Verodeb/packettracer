@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>VLAN Generator</title>
+
+<style>
+body {
+    background: radial-gradient(circle at top, #1d1d1d, #0a0a0a);
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    color: white;
+}
+
+.container {
+    width: 95%;
+    max-width: 900px;
+    background: rgba(30, 30, 30, 0.85);
+    backdrop-filter: blur(15px);
+    border-radius: 22px;
+    padding: 35px;
+    margin-top: 40px;
+    box-shadow: 0 0 30px rgba(0, 180, 255, 0.15);
+    color: white;
+}
+
+h1 {
+    text-align: center;
+    font-size: 34px;
+    font-weight: bold;
+    color: #00bfff;
+    margin-bottom: 25px;
+}
+
+label {
+    font-size: 18px;
+    margin-top: 15px;
+    display: block;
+}
+
+input[type="number"], input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+    font-size: 16px;
+    background: #222;
+    border: 1px solid #444;
+    border-radius: 10px;
+    color: #eee;
+    outline: none;
+    transition: 0.2s;
+}
+
+input:focus {
+    border-color: #00bfff;
+    box-shadow: 0 0 5px #00bfff;
+}
+
+textarea {
+    width: 100%;
+    height: 230px;
+    background: #101010;
+    color: #00bfff;
+    border: none;
+    padding: 15px;
+    font-family: Consolas, monospace;
+    font-size: 15px;
+    border-radius: 12px;
+    resize: none;
+    margin-top: 10px;
+    outline: none;
+}
+
+button {
+    width: 100%;
+    padding: 17px;
+    background: linear-gradient(90deg, #0077cc, #00bfff);
+    color: black;
+    border: none;
+    border-radius: 12px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 25px;
+    transition: 0.25s;
+}
+
+button:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 20px #00bfff;
+}
+
+.vlan-box {
+    margin-top: 25px;
+    background: rgba(255,255,255,0.06);
+    padding: 15px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.back {
+    margin-bottom: 20px;
+    display: inline-block;
+    cursor: pointer;
+    color: #00bfff;
+    font-size: 16px;
+}
+.back:hover { text-decoration: underline; }
+
+.footer {
+    text-align: center;
+    color: #777;
+    margin-top: 20px;
+    font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+    <div class="back" onclick="location.href='index.html'">← Back to Menu</div>
+    <h1>VLAN Generator</h1>
+
+    <label>Number of VLANs:</label>
+    <input type="number" id="vlanCount" min="0" value="0" oninput="generateVlanInputs()">
+
+    <div class="vlan-box" id="vlanInputs"></div>
+
+    <button onclick="generate()">Generate Script</button>
+    <label style="margin-top:20px;">Generated Script:</label>
+    <textarea id="output" readonly></textarea>
+    <button onclick="copyText()">Copy to Clipboard</button>
+    <div class="footer">© Cisco Config Web Generator</div>
+</div>
+
+<script>
+function generateVlanInputs() {
+    let count = parseInt(document.getElementById("vlanCount").value);
+    let box = document.getElementById("vlanInputs");
+    box.innerHTML = "";
+
+    for (let i = 1; i <= count; i++) {
+        box.innerHTML += `
+            <label>VLAN ${i} ID:</label>
+            <input type="number" id="vlan_id_${i}">
+            <label>VLAN ${i} Name:</label>
+            <input type="text" id="vlan_name_${i}">
+        `;
+    }
+}
+
+function generate() {
+    let vlanCount = parseInt(document.getElementById("vlanCount").value);
+    let script = [];
+
+    for (let i = 1; i <= vlanCount; i++) {
+        let id = document.getElementById(`vlan_id_${i}`).value.trim();
+        let name = document.getElementById(`vlan_name_${i}`).value.trim();
+        if(id !== "") {
+            script.push(`vlan ${id}`);
+            if(name !== "") script.push(` name ${name}`);
+            script.push("exit");
+        }
+    }
+
+    document.getElementById("output").value = script.join("\n");
+}
+
+function copyText(){
+    let output = document.getElementById("output");
+    output.select();
+    output.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(output.value);
+}
+</script>
+
+</body>
+</html>
