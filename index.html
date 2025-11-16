@@ -3,64 +3,74 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Cisco Config Generator</title>
+<title>Cisco Script Generator</title>
 
 <style>
-body {
-    background: radial-gradient(circle at top, #1d1d1d, #0a0a0a);
-    margin: 0;
-    font-family: "Segoe UI", sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    color: white;
-}
+    body {
+        margin: 0;
+        padding: 0;
+        background: radial-gradient(circle at top, #111, #000);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Segoe UI", sans-serif;
+        color: white;
+    }
 
-.container {
-    width: 90%;
-    max-width: 500px;
-    background: rgba(30, 30, 30, 0.85);
-    backdrop-filter: blur(15px);
-    border-radius: 22px;
-    padding: 35px;
-    box-shadow: 0 0 30px rgba(0, 180, 255, 0.15);
-    text-align: center;
-}
+    .panel {
+        width: 90%;
+        max-width: 700px;
+        padding: 40px;
+        border-radius: 25px;
+        background: rgba(20,20,20,0.85);
+        box-shadow: 0 0 40px rgba(0,255,200,0.25);
+        text-align: center;
+        backdrop-filter: blur(10px);
+    }
 
-h1 {
-    font-size: 34px;
-    font-weight: bold;
-    color: #00bfff;
-    margin-bottom: 30px;
-}
+    h1 {
+        font-size: 36px;
+        color: #00ffd0;
+        margin-bottom: 30px;
+        text-shadow: 0 0 15px #00ffd0;
+    }
 
-button {
-    width: 100%;
-    padding: 18px;
-    background: linear-gradient(90deg, #0077cc, #00bfff);
-    color: black;
-    border: none;
-    border-radius: 12px;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: 0.25s;
-}
+    .menu-btn {
+        width: 100%;
+        padding: 18px;
+        background: linear-gradient(90deg, #00bbff, #00ffd0);
+        color: black;
+        border: none;
+        border-radius: 14px;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: 0.2s;
+    }
 
-button:hover {
-    transform: scale(1.03);
-    box-shadow: 0 0 20px #00bfff;
-}
+    .menu-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 25px #00ffd0;
+    }
+
 </style>
 </head>
 
 <body>
-<div class="container">
-    <h1>Cisco Config Generator</h1>
-    <button onclick="location.href='router.html'">Router Settings Generator</button>
-    <button onclick="location.href='vlan.html'">VLAN Generator</button>
+
+<div class="panel">
+    <h1>Cisco Web Toolkit</h1>
+
+    <button class="menu-btn" onclick="location.href='router.html'">
+        Router Config Generator
+    </button>
+
+    <button class="menu-btn" onclick="location.href='vlan.html'">
+        VLAN Generator
+    </button>
+
 </div>
 </body>
 </html>

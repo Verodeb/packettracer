@@ -1,199 +1,310 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Router Config Generator</title>
-
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Router Config</title>
 <style>
-body {
-    background: radial-gradient(circle at top, #1d1d1d, #0a0a0a);
-    margin: 0;
-    font-family: "Segoe UI", sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
-    color: white;
-}
+    :root{
+        --bg1: #111;
+        --panel: rgba(20,20,20,0.88);
+        --neon: #00ffd0;
+        --neon-weak: rgba(0,255,208,0.18);
+        --input-bg: #1c1c1c;
+        --text: #e9ffff;
+    }
 
-.container {
-    width: 95%;
-    max-width: 900px;
-    background: rgba(30, 30, 30, 0.85);
-    backdrop-filter: blur(15px);
-    border-radius: 22px;
-    padding: 35px;
-    margin-top: 40px;
-    box-shadow: 0 0 30px rgba(0, 180, 255, 0.15);
-    color: white;
-}
+    html,body{height:100%;margin:0;}
+    body{
+        font-family:"Segoe UI",system-ui,Arial;
+        background: radial-gradient(circle at top, #111, #000);
+        display:flex;
+        align-items:flex-start;
+        justify-content:center;
+        color:var(--text);
+    }
 
-h1 {
-    text-align: center;
-    font-size: 34px;
-    font-weight: bold;
-    color: #00bfff;
-    margin-bottom: 25px;
-}
+    .back {
+        position: fixed;
+        top: 18px;
+        left: 18px;
+        color: var(--neon);
+        text-shadow: 0 0 10px var(--neon);
+        cursor: pointer;
+        background: transparent;
+        border: 1px solid rgba(255,255,255,0.03);
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-weight:600;
+    }
+    .back:hover { box-shadow: 0 0 18px var(--neon); }
 
-label {
-    font-size: 18px;
-    margin-top: 15px;
-    display: block;
-}
+    .panel{
+        width:90%;
+        max-width:760px;
+        margin-top:56px;
+        background:var(--panel);
+        padding:36px;
+        border-radius:22px;
+        box-shadow: 0 0 45px var(--neon-weak);
+        backdrop-filter: blur(12px);
+    }
 
-input[type="text"], input[type="password"] {
-    width: 100%;
-    padding: 12px;
-    margin-top: 6px;
-    font-size: 16px;
-    background: #222;
-    border: 1px solid #444;
-    border-radius: 10px;
-    color: #eee;
-    outline: none;
-    transition: 0.2s;
-}
+    h1{
+        margin:0 0 18px 0;
+        text-align:center;
+        color:var(--neon);
+        text-shadow: 0 0 14px var(--neon);
+        font-size:32px;
+    }
 
-input:focus {
-    border-color: #00bfff;
-    box-shadow: 0 0 5px #00bfff;
-}
+    .grid {
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+        gap:18px 50px;
+        align-items:start;
+        margin-top:10px;
+    }
 
-.checkbox-container {
-    margin-top: 20px;
-    gap: 20px;
-    display: flex;
-    flex-wrap: wrap;
-}
+    label{
+        display:block;
+        font-size:15px;
+        color:#cfeff0;
+        margin-bottom:6px;
+    }
 
-.checkbox-container label {
-    font-size: 17px;
-    cursor: pointer;
-}
+    input[type="text"], input[type="password"], input[type="number"] {
+        width:100%;
+        padding:10px 12px;
+        border-radius:10px;
+        border:1px solid rgba(255,255,255,0.04);
+        background:var(--input-bg);
+        color:var(--text);
+        outline:none;
+        box-shadow: inset 0 0 6px rgba(0,255,208,0.03);
+        transition: box-shadow .15s, border-color .15s, transform .08s;
+        font-size:15px;
+    }
 
-textarea {
-    width: 100%;
-    height: 230px;
-    background: #101010;
-    color: #00bfff;
-    border: none;
-    padding: 15px;
-    font-family: Consolas, monospace;
-    font-size: 15px;
-    border-radius: 12px;
-    resize: none;
-    margin-top: 10px;
-    outline: none;
-}
+    input[type="text"]:focus, input[type="password"]:focus, input[type="number"]:focus{
+        border-color: var(--neon);
+        box-shadow: 0 0 10px rgba(0,255,208,0.12);
+    }
 
-button {
-    width: 100%;
-    padding: 17px;
-    background: linear-gradient(90deg, #0077cc, #00bfff);
-    color: black;
-    border: none;
-    border-radius: 12px;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 25px;
-    transition: 0.25s;
-}
+    @media (max-width:720px){
+        .grid { grid-template-columns: 1fr; }
+    }
 
-button:hover {
-    transform: scale(1.03);
-    box-shadow: 0 0 20px #00bfff;
-}
+    .controls {
+        margin-top:16px;
+        display:flex;
+        gap:14px;
+        align-items:center;
+        justify-content:space-between;
+        flex-wrap:wrap;
+    }
 
-.back {
-    margin-bottom: 20px;
-    display: inline-block;
-    cursor: pointer;
-    color: #00bfff;
-    font-size: 16px;
-}
-.back:hover { text-decoration: underline; }
+    .radio-group{
+        display:flex;
+        gap:12px;
+        align-items:center;
+    }
 
-.footer {
-    text-align: center;
-    color: #777;
-    margin-top: 20px;
-    font-size: 14px;
-}
+    .radio-label{
+        display:inline-flex;
+        gap:8px;
+        align-items:center;
+        cursor:pointer;
+        color:#cfeff0;
+        font-size:15px;
+    }
+
+    #domainBox{
+        margin-top:12px;
+        display:none;
+    }
+
+    .btn{
+        width:100%;
+        padding:14px 16px;
+        border-radius:12px;
+        border:none;
+        font-weight:700;
+        font-size:16px;
+        cursor:pointer;
+        color:#001;
+        background: linear-gradient(90deg,#00bbff,#00ffd0);
+        box-shadow: 0 0 18px rgba(0,255,208,0.12);
+        transition: transform .12s, box-shadow .12s;
+    }
+    .btn:hover{ transform:scale(1.03); box-shadow:0 0 30px rgba(0,255,208,0.18); }
+
+    textarea{
+        width:100%;
+        height:220px;
+        margin-top:16px;
+        padding:14px;
+        border-radius:12px;
+        background:#0e0e0e;
+        color:var(--neon);
+        border:1px solid rgba(255,255,255,0.03);
+        font-family: Consolas, monospace;
+        font-size:14px;
+        resize:vertical;
+        box-shadow: inset 0 0 10px rgba(0,255,208,0.03);
+    }
+
+    .copy-row{
+        display:flex;
+        gap:12px;
+        margin-top:10px;
+        align-items:center;
+    }
+
+    .copy-indicator{
+        color:#9defff;
+        font-size:13px;
+        opacity:0;
+        transition: opacity .25s;
+    }
+
+    .copy-indicator.visible{ opacity:1; }
 </style>
 </head>
-
 <body>
-<div class="container">
-    <div class="back" onclick="location.href='index.html'">← Back to Menu</div>
-    <h1>Router Config Generator</h1>
 
-    <label>Username:</label>
-    <input type="text" id="username">
+<button class="back" onclick="location.href='index.html'">← Back</button>
 
-    <label>Password:</label>
-    <input type="password" id="password">
+<div class="panel" role="main" aria-labelledby="title">
+    <h1 id="title">Router Config Generator</h1>
 
-    <label>MOTD Banner:</label>
-    <input type="text" id="motd">
+    <div class="grid">
+        <div>
+            <label for="username">Username</label>
+            <input id="username" type="text" autocomplete="off" placeholder="">
+        </div>
 
-    <div class="checkbox-container">
-        <label><input type="checkbox" id="ssh"> Enable SSH</label>
-        <label><input type="checkbox" id="telnet"> Enable Telnet</label>
+        <div>
+            <label for="password">Password</label>
+            <input id="password" type="text" autocomplete="new-password" placeholder="">
+        </div>
+
+        <div style="grid-column: 1 / -1;">
+            <label for="motd">MOTD Banner</label>
+            <input id="motd" type="text" placeholder="">
+        </div>
     </div>
 
-    <button onclick="generate()">Generate Script</button>
+    <div class="controls" style="margin-top:18px;">
+        <div>
+            <div class="radio-group" role="radiogroup" aria-label="access type">
+                <label class="radio-label"><input id="proto_none" name="proto" type="radio" value="" checked> None</label>
+                <label class="radio-label"><input id="proto_ssh" name="proto" type="radio" value="ssh"> SSH</label>
+                <label class="radio-label"><input id="proto_telnet" name="proto" type="radio" value="telnet"> Telnet</label>
+            </div>
 
-    <label style="margin-top:20px;">Generated Script:</label>
-    <textarea id="output" readonly></textarea>
+            <div id="domainBox" aria-hidden="true" style="max-width:420px;">
+                <label for="domain" style="margin-top:12px;">Domain name</label>
+                <input id="domain" type="text" placeholder="">
+            </div>
+        </div>
+    </div>
 
-    <button onclick="copyText()">Copy to Clipboard</button>
-    <div class="footer">© Cisco Config Web Generator</div>
+    <textarea id="output" readonly aria-label="Generated configuration"></textarea>
+
+    <div class="copy-row">
+        <button id="copyBtn" class="btn" style="width:50%;" onclick="copyOutput()">Copy to clipboard</button>
+        <div id="copied" class="copy-indicator">Copied!</div>
+        <button id="genBtn" class="btn" style="width:50%;" onclick="generateConfig()">Generate Config</button>
+    </div>
 </div>
 
 <script>
-function generate() {
-    let username = document.getElementById("username").value.trim();
-    let password = document.getElementById("password").value.trim();
-    let motd = document.getElementById("motd").value.trim();
-    let ssh = document.getElementById("ssh").checked;
-    let telnet = document.getElementById("telnet").checked;
 
-    let script = [];
-    script.push("configure terminal");
+const protoNone = document.getElementById('proto_none');
+const protoSSH = document.getElementById('proto_ssh');
+const protoTelnet = document.getElementById('proto_telnet');
+const domainBox = document.getElementById('domainBox');
+const domainInput = document.getElementById('domain');
 
-    if(username && password) script.push(`username ${username} password ${password}`);
-    if(password) script.push(`enable secret ${password}`); // Password used also for enable secret
-    if(motd) script.push(`banner motd #${motd}#`);
+function updateDomainVisibility(){
+    if(protoSSH.checked || protoTelnet.checked){
+        domainBox.style.display = 'block';
+        domainBox.setAttribute('aria-hidden','false');
+    } else {
+        domainBox.style.display = 'none';
+        domainBox.setAttribute('aria-hidden','true');
+        domainInput.value = '';
+    }
+}
+[protoNone, protoSSH, protoTelnet].forEach(el => el.addEventListener('change', updateDomainVisibility));
 
-    if(ssh){
-        script.push("ip domain-name local");
-        script.push("crypto key generate rsa modulus 1024");
-        script.push("line vty 0 15");
-        script.push("transport input ssh");
-        if(username && password) script.push("login local");
+function generateConfig(){
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const motd = document.getElementById('motd').value.trim();
+    const domain = domainInput.value.trim();
+
+    const lines = [];
+    lines.push('configure terminal');
+
+    if(password){
+        lines.push(`enable secret ${password}`);
     }
 
-    if(telnet){
-        script.push("line vty 0 15");
-        script.push("transport input telnet");
-        if(username && password) script.push("login local");
+    if(username && password){
+        lines.push(`username ${username} privilege 15 secret ${password}`);
+    } else if (username && !password){
+        lines.push(`username ${username} privilege 15 password  `);
     }
 
-    script.push("end");
-    script.push("write");
+    if(motd){
+        lines.push(`banner motd #${motd}#`);
+    }
 
-    document.getElementById("output").value = script.join("\n");
+    if(protoSSH.checked || protoTelnet.checked){
+        if(domain){
+            lines.push(`ip domain-name ${domain}`);
+        }
+
+        if(protoSSH.checked){
+            lines.push('crypto key generate rsa modulus 1024');
+            lines.push('ip ssh version 2');
+            lines.push('line vty 0 15');
+            lines.push('transport input ssh');
+            if(username && password) lines.push('login local');
+            else if(password) lines.push(`password ${password}`);
+        } else {
+            lines.push('line vty 0 15');
+            lines.push('transport input telnet');
+            if(username && password) lines.push('login local');
+            else if(password) lines.push(`password ${password}`);
+        }
+    }
+
+    lines.push('end');
+    lines.push('write');
+
+    document.getElementById('output').value = lines.join('\n');
 }
 
-function copyText(){
-    let output = document.getElementById("output");
-    output.select();
-    output.setSelectionRange(0, 99999);
-    navigator.clipboard.writeText(output.value);
+const copyBtn = document.getElementById('copyBtn');
+const copied = document.getElementById('copied');
+
+function copyOutput(){
+    const text = document.getElementById('output').value || '';
+    navigator.clipboard.writeText(text).then(() => {
+        copied.classList.add('visible');
+        setTimeout(()=> copied.classList.remove('visible'), 1200);
+    }).catch(()=> {
+        const ta = document.getElementById('output');
+        ta.select();
+        try { document.execCommand('copy'); copied.classList.add('visible'); setTimeout(()=> copied.classList.remove('visible'), 1200); }
+        catch(e){}
+    });
 }
+
+updateDomainVisibility();
 </script>
 </body>
 </html>
